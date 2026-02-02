@@ -1,0 +1,75 @@
+/* General Page Styling */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffe6e9; /* Soft Pink Background */
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden; /* Prevents scrollbars when button moves */
+}
+
+.container {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* Image styling */
+#mascot {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+/* Text Styling */
+h1 {
+    font-family: 'Pacifico', cursive;
+    color: #ff4d6d;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 0px #fff;
+}
+
+/* Button Container */
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Button Styling */
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+/* Yes Button Style */
+#yesBtn {
+    background-color: #ff4d6d;
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+}
+
+#yesBtn:hover {
+    background-color: #d63353;
+    transform: scale(1.1);
+}
+
+/* No Button Style */
+#noBtn {
+    background-color: #fff;
+    color: #ff4d6d;
+    border: 2px solid #ff4d6d;
+    /* Absolute position is required to make it move freely */
+    position: relative; 
+}
