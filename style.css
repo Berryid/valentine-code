@@ -1,12 +1,13 @@
+/* GENERAL PAGE STYLING */
 body {
     margin: 0;
-    height: 100vh;
+    height: 100vh; /* Takes up full screen height */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ffe6e9 0%, #ffc0cb 100%); /* Prettier background */
+    background: linear-gradient(135deg, #ffe6e9 0%, #ffc0cb 100%);
     font-family: 'Poppins', sans-serif;
-    overflow: hidden;
+    overflow: hidden; /* Prevents scrolling so the No button stays visible */
 }
 
 .container {
@@ -17,12 +18,13 @@ body {
     z-index: 10;
 }
 
+/* VIDEO/IMAGE BOX */
 #media-container {
     width: 100%;
-    height: 350px;
-    background-color: #000; /* Black background looks better for video */
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    height: 350px; /* Default height for bigger phones/laptops */
+    background-color: #000;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     overflow: hidden;
     margin-bottom: 20px;
     display: flex;
@@ -38,52 +40,63 @@ body {
     object-fit: cover;
 }
 
+/* MUTE BUTTON */
 #muteBtn {
     position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background: rgba(255, 255, 255, 0.9);
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border: none;
     cursor: pointer;
     z-index: 20;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* TEXT STYLING */
 h1 {
     font-family: 'Pacifico', cursive;
     color: #ff2e63;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin: 10px 0;
-    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.6);
+    line-height: 1.2;
 }
 
 p {
-    color: #555;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    font-weight: 500;
 }
 
+/* BUTTONS */
 .buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     justify-content: center;
+    flex-wrap: wrap; /* Ensures buttons don't get squished */
 }
 
 button {
-    padding: 15px 35px;
-    font-size: 1.1rem;
+    padding: 12px 25px;
+    font-size: 1rem;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Keeps text on one line */
+    z-index: 100; /* Ensures buttons are always clickable */
 }
 
-/* HEARTBEAT ANIMATION FOR YES BUTTON */
+/* YES BUTTON HEARTBEAT */
 @keyframes heartbeat {
     0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
     70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 77, 109, 0); }
@@ -93,7 +106,7 @@ button {
 #yesBtn {
     background-color: #ff2e63;
     color: white;
-    animation: heartbeat 2s infinite; /* The pulse effect */
+    animation: heartbeat 1.5s infinite;
 }
 
 #noBtn {
@@ -101,4 +114,48 @@ button {
     color: #ff2e63;
     border: 2px solid #ff2e63;
     position: relative;
+}
+
+/* ----------------------------------------------------------- */
+/* MOBILE OPTIMIZATION (iPhone 6, 7, 8, SE - 4.7 Inch Screens) */
+/* ----------------------------------------------------------- */
+@media (max-width: 480px) {
+    /* Shrink the container to fit narrow screens */
+    .container {
+        width: 95%; 
+    }
+
+    /* Make the video box shorter so buttons fit on screen */
+    #media-container {
+        height: 250px; /* Reduced from 350px */
+        margin-bottom: 15px;
+    }
+
+    /* Shrink the huge title text */
+    h1 {
+        font-size: 2rem; 
+        margin-bottom: 5px;
+    }
+
+    /* Shrink the subtitle */
+    p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    /* Make buttons slightly smaller and touch-friendly */
+    button {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+/* EXTRA SMALL SCREENS (Very old phones or landscape mode) */
+@media (max-height: 600px) {
+    #media-container {
+        height: 200px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
 }
