@@ -131,17 +131,28 @@ yesBtn.addEventListener('click', () => {
     mainText.innerHTML = "I Love You! ❤️";
     subText.innerHTML = "Happy Valentine's Day";
 
-    // 3. Play the Gift Video
+    // 3. Play the Gift Video (UPGRADED LOGIC)
     mediaContainer.innerHTML = ''; // Clear everything
+    
     const finalVideo = document.createElement('video');
     finalVideo.src = giftVideo;
+    
+    // CRITICAL FIXES FOR MOBILE
     finalVideo.autoplay = true;
-    finalVideo.controls = true; // Let her control it
     finalVideo.loop = true;
+    finalVideo.controls = true; // Keep controls so she can unmute/pause
+    finalVideo.playsInline = true; // Important for iPhone
+    finalVideo.setAttribute('playsinline', ''); // Force iPhone inline
+    finalVideo.setAttribute('webkit-playsinline', ''); 
+    
     finalVideo.style.width = "100%";
     finalVideo.style.height = "100%";
+    finalVideo.style.objectFit = "cover"; // Ensures it looks good
     
     mediaContainer.appendChild(finalVideo);
+    
+    // Force Play Trigger
+    finalVideo.play().catch(e => console.log("Auto-play blocked:", e));
 
     // 4. Remove Buttons
     yesBtn.style.display = 'none';
