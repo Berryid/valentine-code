@@ -138,16 +138,17 @@ yesBtn.addEventListener('click', () => {
     finalVideo.src = giftVideo;
     
     // CRITICAL FIXES FOR MOBILE
+    finalVideo.muted = true;           // <--- THIS WAS MISSING! Required for autoplay.
     finalVideo.autoplay = true;
     finalVideo.loop = true;
-    finalVideo.controls = true; // Keep controls so she can unmute/pause
-    finalVideo.playsInline = true; // Important for iPhone
-    finalVideo.setAttribute('playsinline', ''); // Force iPhone inline
+    finalVideo.controls = true;        // She can tap this to hear sound
+    finalVideo.playsInline = true; 
+    finalVideo.setAttribute('playsinline', ''); 
     finalVideo.setAttribute('webkit-playsinline', ''); 
     
     finalVideo.style.width = "100%";
     finalVideo.style.height = "100%";
-    finalVideo.style.objectFit = "cover"; // Ensures it looks good
+    finalVideo.style.objectFit = "cover"; 
     
     mediaContainer.appendChild(finalVideo);
     
