@@ -8,16 +8,19 @@ const muteBtn = document.getElementById('muteBtn');
 // ---------------------------------------------------------
 // CONFIGURATION: YOUR FILES
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+// CONFIGURATION: NEW CLEAN NAMES
+// ---------------------------------------------------------
 const memories = [
-    'assets/1.jpg',
-    'assets/3.MP4',
-    'assets/4.MP4',
-    'assets/5.MP4'  // Added 5 back in just in case!
+    'assets/pic.jpg',
+    'assets/vid1.mp4',
+    'assets/vid2.mp4',
+    'assets/vid3.mp4'
 ];
 
-// This is the "GIFT" video. 
-// Change to 'assets/7.MP4' if that is your best one!
-const giftVideo = 'assets/6.MP4'; 
+// Your big finale video
+const giftVideo = 'assets/gift.mp4'; 
+// --------------------------------------------------------- 
 // ---------------------------------------------------------
 
 let currentIndex = 0;
