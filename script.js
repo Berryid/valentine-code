@@ -1,53 +1,132 @@
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
-const question = document.getElementById('question');
-const mascot = document.getElementById('mascot');
+const mainText = document.getElementById('main-text');
+const subText = document.getElementById('sub-text');
+const mediaContainer = document.getElementById('media-container');
+const muteBtn = document.getElementById('muteBtn');
 
-// Logic for the "No" button to run away
-function moveButton() {
-    // Get viewport dimensions
-    const maxWidth = window.innerWidth - noBtn.offsetWidth;
-    const maxHeight = window.innerHeight - noBtn.offsetHeight;
+// ---------------------------------------------------------
+// CONFIGURATION: YOUR FILES
+// ---------------------------------------------------------
+const memories = [
+    'assets/1.jpg',
+    'assets/3.mp4',
+    'assets/4.mp4',
+    'assets/5.mp4'  // Added 5 back in just in case!
+];
 
-    // Calculate random position
-    const randomX = Math.floor(Math.random() * maxWidth);
-    const randomY = Math.floor(Math.random() * maxHeight);
+// This is the "GIFT" video. 
+// Change to 'assets/7.mp4' if that is your best one!
+const giftVideo = 'assets/6.mp4'; 
+// ---------------------------------------------------------
 
-    // Apply new position
-    noBtn.style.position = 'absolute'; // Change to absolute so it can move anywhere
-    noBtn.style.left = randomX + 'px';
-    noBtn.style.top = randomY + 'px';
+let currentIndex = 0;
+let isMuted = true; 
+
+// Mute Button Logic
+muteBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isMuted = !isMuted;
+    muteBtn.innerText = isMuted ? "🔇" : "🔊";
+    const currentVideo = mediaContainer.querySelector('video');
+    if (currentVideo) currentVideo.muted = isMuted;
+});
+
+// Slideshow Logic
+function loadMedia(index) {
+    const file = memories[index];
+    const isVideo = file.endsWith('.mp4') || file.endsWith('.mov');
+    
+    let element = isVideo ? document.createElement('video') : document.createElement('img');
+    element.src = file;
+    
+    if (isVideo) {
+        element.autoplay = true;
+        element.muted = isMuted;
+        element.playsInline = true;
+        element.loop = false;
+        element.onended = nextMemory;
+        muteBtn.style.display = 'flex';
+    } else {
+        muteBtn.style.display = 'none';
+        setTimeout(nextMemory, 3000);
+    }
+
+    element.onloadeddata = () => clearAndAppend(element);
+    element.onload = () => clearAndAppend(element);
+    
+    // Safety fallback
+    setTimeout(() => {
+        if (!mediaContainer.contains(element)) clearAndAppend(element);
+    }, 200);
 }
 
-// Event listeners for "No" button (Desktop hover & Mobile touch)
+function clearAndAppend(element) {
+    const old = mediaContainer.querySelector('img, video');
+    if (old) old.remove();
+    document.getElementById('loading').style.display = 'none';
+    mediaContainer.appendChild(element);
+    if(element.tagName === 'VIDEO') mediaContainer.appendChild(muteBtn);
+}
+
+function nextMemory() {
+    currentIndex = (currentIndex + 1) % memories.length;
+    loadMedia(currentIndex);
+}
+
+// Start Slideshow
+loadMedia(currentIndex);
+
+// "No" Button (Still runs away, but labeled 'Exit')
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+}
 noBtn.addEventListener('mouseover', moveButton);
 noBtn.addEventListener('touchstart', moveButton);
 
-// Logic for the "Yes" button
+// "Yes" Button (THE BIG REVEAL)
 yesBtn.addEventListener('click', () => {
-    // 1. Trigger Confetti
-    confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-    });
+    // 1. Massive Confetti Explosion
+    const duration = 3000;
+    const end = Date.now() + duration;
 
-    // 2. Change the text
-    question.innerHTML = "Yay! I love you! ❤️";
+    (function frame() {
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+        });
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+    }());
+
+    // 2. Change Text
+    mainText.innerHTML = "I Love You! ❤️";
+    subText.innerHTML = "Happy Valentine's Day";
+
+    // 3. Play the Gift Video
+    mediaContainer.innerHTML = ''; // Clear everything
+    const finalVideo = document.createElement('video');
+    finalVideo.src = giftVideo;
+    finalVideo.autoplay = true;
+    finalVideo.controls = true; // Let her control it
+    finalVideo.loop = true;
+    finalVideo.style.width = "100%";
+    finalVideo.style.height = "100%";
     
-    // 3. Change the image to a celebration one
-    mascot.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3R6eW14cnl6aHd4a3ZkaXp5bzI0ZGV6cm14aW16OW5ma3h5azZ5ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Is1O1TWV0LEJi/giphy.gif"; // Cute hugging gif
+    mediaContainer.appendChild(finalVideo);
 
-    // 4. Hide the buttons
+    // 4. Remove Buttons
     yesBtn.style.display = 'none';
     noBtn.style.display = 'none';
-    
-    // Fire more confetti after a slight delay
-    setTimeout(() => {
-        confetti({
-            particleCount: 200,
-            spread: 100,
-            origin: { y: 0.6 }
-        });
-    }, 500);
 });

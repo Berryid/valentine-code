@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
+    <title>Happy Valentine's Day! ❤️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -11,13 +11,17 @@
 <body>
 
     <div class="container">
-        <img id="mascot" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGIwZHIxNHRreDh4N3lxZWRuM2x5eGZ4N2F2b293Z2o4b2p0a2c5ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KxtjPgBHlUEG2gh09d/giphy.gif" alt="Cute bear">
+        <div id="media-container">
+            <div id="loading">Loading our memories...</div>
+            <button id="muteBtn" style="display: none;">🔇</button>
+        </div>
         
-        <h1 id="question">Will you be my Valentine?</h1>
+        <h1 id="main-text">Happy Valentine's Day! ❤️</h1>
+        <p id="sub-text">I made this just for you.</p>
         
         <div class="buttons">
-            <button id="yesBtn">Yes! 💖</button>
-            <button id="noBtn">No 😢</button>
+            <button id="yesBtn">Open Gift 🎁</button>
+            <button id="noBtn">Exit ❌</button>
         </div>
     </div>
 
