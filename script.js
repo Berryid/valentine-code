@@ -40,28 +40,42 @@ function loadMedia(index) {
     const file = memories[index];
     const isVideo = file.endsWith('.mp4') || file.endsWith('.mov');
     
-    let element = isVideo ? document.createElement('video') : document.createElement('img');
-    element.src = file;
+    let element;
     
     if (isVideo) {
-        element.autoplay = true;
-        element.muted = isMuted;
-        element.playsInline = true;
+        element = document.createElement('video');
+        element.src = file;
+        
+        // CRITICAL SETTINGS FOR MOBILE AUTOPLAY
+        element.muted = true;              // Must be silent to start
+        element.autoplay = true;           // Tell it to play
+        element.playsInline = true;        // Prevent full-screen on iPhone
+        element.setAttribute('playsinline', ''); // Extra force for iOS
+        element.setAttribute('webkit-playsinline', ''); // Older iOS
         element.loop = false;
+        
+        // When video ends, go to next
         element.onended = nextMemory;
-        muteBtn.style.display = 'flex';
+        
+        // Show mute button
+        if(muteBtn) muteBtn.style.display = 'flex';
+        
+        // Force play promise (fixes "stuck" videos)
+        element.onloadeddata = () => {
+            clearAndAppend(element);
+            element.play().catch(e => console.log("Browser blocked autoplay:", e));
+        };
+        
     } else {
-        muteBtn.style.display = 'none';
+        element = document.createElement('img');
+        element.src = file;
+        if(muteBtn) muteBtn.style.display = 'none';
+        
+        element.onload = () => clearAndAppend(element);
+        
+        // Wait 3 seconds for images
         setTimeout(nextMemory, 3000);
     }
-
-    element.onloadeddata = () => clearAndAppend(element);
-    element.onload = () => clearAndAppend(element);
-    
-    // Safety fallback
-    setTimeout(() => {
-        if (!mediaContainer.contains(element)) clearAndAppend(element);
-    }, 200);
 }
 
 function clearAndAppend(element) {
