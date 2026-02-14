@@ -107,23 +107,13 @@ noBtn.addEventListener('touchstart', moveButton);
 
 // "Yes" Button (THE BIG REVEAL)
 yesBtn.addEventListener('click', () => {
-    // 1. Massive Confetti Explosion
+    // 1. Confetti Explosion
     const duration = 3000;
     const end = Date.now() + duration;
 
     (function frame() {
-        confetti({
-            particleCount: 5,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 }
-        });
-        confetti({
-            particleCount: 5,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 }
-        });
+        confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+        confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
         if (Date.now() < end) requestAnimationFrame(frame);
     }());
 
@@ -131,31 +121,66 @@ yesBtn.addEventListener('click', () => {
     mainText.innerHTML = "I Love You! ❤️";
     subText.innerHTML = "Happy Valentine's Day";
 
-    // 3. Play the Gift Video (UPGRADED LOGIC)
-    mediaContainer.innerHTML = ''; // Clear everything
-    
+    // 3. Clear the box
+    mediaContainer.innerHTML = ''; 
+    mediaContainer.style.position = 'relative'; // Needed to center the button
+
+    // 4. Create the Gift Video
     const finalVideo = document.createElement('video');
     finalVideo.src = giftVideo;
-    
-    // CRITICAL FIXES FOR MOBILE
-    finalVideo.muted = true;           // <--- THIS WAS MISSING! Required for autoplay.
-    finalVideo.autoplay = true;
+    finalVideo.autoplay = true;     
+    finalVideo.muted = true;        // Muted is REQUIRED for mobile auto-start
     finalVideo.loop = true;
-    finalVideo.controls = true;        // She can tap this to hear sound
-    finalVideo.playsInline = true; 
+    finalVideo.controls = true;     
+    finalVideo.playsInline = true;  
     finalVideo.setAttribute('playsinline', ''); 
-    finalVideo.setAttribute('webkit-playsinline', ''); 
-    
     finalVideo.style.width = "100%";
     finalVideo.style.height = "100%";
-    finalVideo.style.objectFit = "cover"; 
+    finalVideo.style.objectFit = "cover";
     
-    mediaContainer.appendChild(finalVideo);
-    
-    // Force Play Trigger
-    finalVideo.play().catch(e => console.log("Auto-play blocked:", e));
+    // 5. Create a "Tap to Play" Button (The Backup Plan)
+    const playOverlay = document.createElement('button');
+    playOverlay.innerHTML = "▶ Play Video";
+    playOverlay.style.position = 'absolute';
+    playOverlay.style.top = '50%';
+    playOverlay.style.left = '50%';
+    playOverlay.style.transform = 'translate(-50%, -50%)';
+    playOverlay.style.padding = '15px 30px';
+    playOverlay.style.fontSize = '1.5rem';
+    playOverlay.style.background = '#ff4d6d';
+    playOverlay.style.color = 'white';
+    playOverlay.style.border = '4px solid white';
+    playOverlay.style.borderRadius = '50px';
+    playOverlay.style.cursor = 'pointer';
+    playOverlay.style.zIndex = '100'; // Sit on top of the video
+    playOverlay.style.boxShadow = '0 10px 20px rgba(0,0,0,0.3)';
 
-    // 4. Remove Buttons
+    // Add video and button to the box
+    mediaContainer.appendChild(finalVideo);
+    mediaContainer.appendChild(playOverlay);
+
+    // 6. Try to Play Automatically
+    var playPromise = finalVideo.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // If it works, hide the button!
+            playOverlay.style.display = 'none';
+        })
+        .catch(error => {
+            // If it fails (Black Screen), keep the button visible!
+            console.log("Autoplay blocked. Waiting for manual click.");
+        });
+    }
+
+    // 7. If she clicks the Play Button, force start
+    playOverlay.addEventListener('click', () => {
+        playOverlay.style.display = 'none'; // Hide button
+        finalVideo.muted = false; // Unmute sound!
+        finalVideo.play();
+    });
+
+    // Remove the old Yes/No buttons
     yesBtn.style.display = 'none';
     noBtn.style.display = 'none';
 });
