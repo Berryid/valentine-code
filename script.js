@@ -10,14 +10,14 @@ const muteBtn = document.getElementById('muteBtn');
 // ---------------------------------------------------------
 const memories = [
     'assets/1.jpg',
-    'assets/3.mp4',
-    'assets/4.mp4',
-    'assets/5.mp4'  // Added 5 back in just in case!
+    'assets/3.MP4',
+    'assets/4.MP4',
+    'assets/5.MP4'  // Added 5 back in just in case!
 ];
 
 // This is the "GIFT" video. 
-// Change to 'assets/7.mp4' if that is your best one!
-const giftVideo = 'assets/6.mp4'; 
+// Change to 'assets/7.MP4' if that is your best one!
+const giftVideo = 'assets/6.MP4'; 
 // ---------------------------------------------------------
 
 let currentIndex = 0;
